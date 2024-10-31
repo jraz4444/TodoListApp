@@ -1,17 +1,22 @@
-package com.example.todolistapp;
+package com.example.todolistappbasic;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.todolistapp.TaskItem;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +54,8 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
         TextView textViewNotes = convertView.findViewById(R.id.textViewNotes);
         Button buttonMoveUp = convertView.findViewById(R.id.buttonMoveUp);
         Button buttonMoveDown = convertView.findViewById(R.id.buttonMoveDown);
+        Button buttonEdit = convertView.findViewById(R.id.buttonEdit); // Edit button
+        Button buttonDelete = convertView.findViewById(R.id.buttonDelete); // Delete button
 
         // Set the task description, due date, and notes
         textViewTaskDescription.setText(taskItem.getTaskDescription());
@@ -80,6 +87,50 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
                 Collections.swap(tasks, position, position + 1);
                 notifyDataSetChanged(); // Notify the adapter of the change
             }
+        });
+
+        // Handle "Edit" button click
+        buttonEdit.setOnClickListener(v -> {
+            // Inflate a dialog layout to enter updated task details
+            View editView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_task, null);
+            EditText editDescription = editView.findViewById(R.id.editTaskDescription);
+            EditText editDueDate = editView.findViewById(R.id.editDueDate);
+            EditText editNotes = editView.findViewById(R.id.editNotes);
+
+            // Set current values in the edit fields
+            editDescription.setText(taskItem.getTaskDescription());
+            editDueDate.setText(taskItem.getDueDate());
+            editNotes.setText(taskItem.getNotes());
+
+            // Build an AlertDialog for editing task
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Edit Task")
+                    .setView(editView)
+                    .setPositiveButton("Save", (dialog, which) -> {
+                        // Update the task with new details
+                        taskItem.setTaskDescription(editDescription.getText().toString());
+                        taskItem.setDueDate(editDueDate.getText().toString());
+                        taskItem.setNotes(editNotes.getText().toString());
+                        notifyDataSetChanged(); // Refresh the list
+                        Toast.makeText(getContext(), "Task updated", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
+        // Handle "Delete" button click
+        buttonDelete.setOnClickListener(v -> {
+            // Confirm deletion
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Delete Task")
+                    .setMessage("Are you sure you want to delete this task?")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        tasks.remove(position); // Remove the task from the list
+                        notifyDataSetChanged(); // Notify the adapter of the change
+                        Toast.makeText(getContext(), "Task deleted", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
         });
 
         return convertView;
