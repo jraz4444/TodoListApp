@@ -5,11 +5,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -20,9 +21,9 @@ import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<com.example.todolistapp.TaskItem> tasks;
-    private com.example.todolistappbasic.TaskAdapter taskAdapter;
-    private ListView listViewTasks;
+    private ArrayList<TaskItem> tasks; // List to hold TaskItems
+    private TaskAdapter taskAdapter; // Adapter to bind tasks to ListView
+    private ListView listViewTasks; // ListView for displaying tasks
     private String selectedDueDate = "";  // To store the selected due date
 
     @Override
@@ -30,112 +31,114 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize components
+        // Initialize UI components
+        initUIComponents();
+
+        // Load and apply dark mode preference
+        applyDarkModePreference();
+    }
+
+    private void initUIComponents() {
         EditText editTextTask = findViewById(R.id.editTextTask);
         EditText editTextNotes = findViewById(R.id.editTextNotes);
         Button buttonAddTask = findViewById(R.id.buttonAddTask);
-        Button buttonDueDate = findViewById(R.id.buttonDueDate);  // Button for selecting due date
-        Button buttonSort = findViewById(R.id.buttonSort);  // Sort button
+        Button buttonDueDate = findViewById(R.id.buttonDueDate);
+        Button buttonSort = findViewById(R.id.buttonSort);
         listViewTasks = findViewById(R.id.listViewTasks);
-        Switch switchDarkMode = findViewById(R.id.switchDarkMode);  // Switch for dark mode
+        Switch switchDarkMode = findViewById(R.id.switchDarkMode);
+        CalendarView calendarView = findViewById(R.id.calendarView);
 
         // Initialize the tasks list
         tasks = new ArrayList<>();
-
-        // Set up the custom adapter to display tasks in ListView
-        taskAdapter = new com.example.todolistappbasic.TaskAdapter(this, tasks);
+        taskAdapter = new TaskAdapter(this, tasks);
         listViewTasks.setAdapter(taskAdapter);
 
-        // Load and apply dark mode preference
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        boolean isDarkMode = sharedPreferences.getBoolean("DarkMode", false);
-        toggleDarkMode(isDarkMode);
-        switchDarkMode.setChecked(isDarkMode);
-
         // Due Date button functionality
-        buttonDueDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Use Calendar to get the current date
-                final Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                // Create a DatePickerDialog
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        MainActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                // Handle selected date
-                                selectedDueDate = dayOfMonth + "/" + (month + 1) + "/" + year;
-                                Toast.makeText(MainActivity.this, "Due Date: " + selectedDueDate, Toast.LENGTH_SHORT).show();
-                            }
-                        },
-                        year, month, day);
-                datePickerDialog.show();
-            }
-        });
+        buttonDueDate.setOnClickListener(v -> showDatePickerDialog());
 
         // Add Task button functionality
-        buttonAddTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String taskDescription = editTextTask.getText().toString();
-                String notes = editTextNotes.getText().toString();
-                if (!taskDescription.isEmpty()) {
-                    // Create a new TaskItem with the task description, selected due date, and notes
-                    com.example.todolistapp.TaskItem taskItem = new com.example.todolistapp.TaskItem(taskDescription, selectedDueDate, notes);
-                    tasks.add(taskItem);  // Add the task to the list
-                    taskAdapter.notifyDataSetChanged();  // Notify the adapter to refresh the ListView
-                    editTextTask.setText("");  // Clear the input field
-                    editTextNotes.setText("");  // Clear the notes field
-                    selectedDueDate = "";  // Reset due date after adding task
-                }
-            }
-        });
+        buttonAddTask.setOnClickListener(v -> addTask(editTextTask, editTextNotes));
 
         // Sort Tasks button functionality
-        buttonSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sortTasksByDueDate();  // Call the method to sort tasks
-            }
-        });
+        buttonSort.setOnClickListener(v -> sortTasksByDueDate());
 
         // Dark Mode toggle functionality
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             toggleDarkMode(isChecked);
-            // Save preference
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("DarkMode", isChecked);
-            editor.apply();
+            saveDarkModePreference(isChecked);
+        });
+
+        // CalendarView selection handling
+        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            selectedDueDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+            Toast.makeText(MainActivity.this, "Selected Due Date: " + selectedDueDate, Toast.LENGTH_SHORT).show();
         });
     }
 
-    // Method to toggle Dark Mode
-    public void toggleDarkMode(boolean enableDarkMode) {
+    private void applyDarkModePreference() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        boolean isDarkMode = sharedPreferences.getBoolean("DarkMode", false);
+        toggleDarkMode(isDarkMode);
+    }
+
+    private void showDatePickerDialog() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                MainActivity.this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    selectedDueDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                    Toast.makeText(MainActivity.this, "Due Date: " + selectedDueDate, Toast.LENGTH_SHORT).show();
+                },
+                year, month, day);
+        datePickerDialog.show();
+    }
+
+    private void addTask(EditText editTextTask, EditText editTextNotes) {
+        String taskDescription = editTextTask.getText().toString();
+        String notes = editTextNotes.getText().toString();
+
+        if (!taskDescription.isEmpty()) {
+            TaskItem taskItem = new TaskItem(taskDescription, selectedDueDate, notes);
+            tasks.add(taskItem);
+            taskAdapter.notifyDataSetChanged();
+            clearInputFields(editTextTask, editTextNotes);
+            selectedDueDate = ""; // Reset due date after adding task
+        } else {
+            Toast.makeText(this, "Task description cannot be empty", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void clearInputFields(EditText editTextTask, EditText editTextNotes) {
+        editTextTask.setText("");
+        editTextNotes.setText("");
+    }
+
+    private void saveDarkModePreference(boolean isChecked) {
+        SharedPreferences.Editor editor = getSharedPreferences("MyPrefs", MODE_PRIVATE).edit();
+        editor.putBoolean("DarkMode", isChecked);
+        editor.apply();
+    }
+
+    private void toggleDarkMode(boolean enableDarkMode) {
         AppCompatDelegate.setDefaultNightMode(
                 enableDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
         );
     }
 
-    // Method to sort tasks by due date
-    public void sortTasksByDueDate() {
-        Collections.sort(tasks, new Comparator<com.example.todolistapp.TaskItem>() {
+    private void sortTasksByDueDate() {
+        Collections.sort(tasks, new Comparator<TaskItem>() {
             @Override
-            public int compare(com.example.todolistapp.TaskItem t1, com.example.todolistapp.TaskItem t2) {
-                // Compare dates in the format "day/month/year"
+            public int compare(TaskItem t1, TaskItem t2) {
                 return parseDate(t1.getDueDate()).compareTo(parseDate(t2.getDueDate()));
             }
         });
-
-        // Notify the adapter that the data has changed
         taskAdapter.notifyDataSetChanged();
     }
 
-    // Utility method to parse the date string in the format "day/month/year"
     private Calendar parseDate(String dateString) {
         String[] parts = dateString.split("/");
         Calendar calendar = Calendar.getInstance();
