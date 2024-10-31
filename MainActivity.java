@@ -1,4 +1,4 @@
-package com.example.todolistapp;
+package com.example.todolistappbasic;
 
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
@@ -20,8 +20,8 @@ import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<TaskItem> tasks;
-    private TaskAdapter taskAdapter;
+    private ArrayList<com.example.todolistapp.TaskItem> tasks;
+    private com.example.todolistappbasic.TaskAdapter taskAdapter;
     private ListView listViewTasks;
     private String selectedDueDate = "";  // To store the selected due date
 
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         tasks = new ArrayList<>();
 
         // Set up the custom adapter to display tasks in ListView
-        taskAdapter = new TaskAdapter(this, tasks);
+        taskAdapter = new com.example.todolistappbasic.TaskAdapter(this, tasks);
         listViewTasks.setAdapter(taskAdapter);
 
         // Load and apply dark mode preference
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 String notes = editTextNotes.getText().toString();
                 if (!taskDescription.isEmpty()) {
                     // Create a new TaskItem with the task description, selected due date, and notes
-                    TaskItem taskItem = new TaskItem(taskDescription, selectedDueDate, notes);
+                    com.example.todolistapp.TaskItem taskItem = new com.example.todolistapp.TaskItem(taskDescription, selectedDueDate, notes);
                     tasks.add(taskItem);  // Add the task to the list
                     taskAdapter.notifyDataSetChanged();  // Notify the adapter to refresh the ListView
                     editTextTask.setText("");  // Clear the input field
@@ -123,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Method to sort tasks by due date
     public void sortTasksByDueDate() {
-        Collections.sort(tasks, new Comparator<TaskItem>() {
+        Collections.sort(tasks, new Comparator<com.example.todolistapp.TaskItem>() {
             @Override
-            public int compare(TaskItem t1, TaskItem t2) {
+            public int compare(com.example.todolistapp.TaskItem t1, com.example.todolistapp.TaskItem t2) {
                 // Compare dates in the format "day/month/year"
                 return parseDate(t1.getDueDate()).compareTo(parseDate(t2.getDueDate()));
             }
