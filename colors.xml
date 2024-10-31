@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- res/values/colors.xml -->
+    <color name="tag_blue">#2196F3</color>  <!-- Blue for certain tags -->
+    <color name="tag_green">#4CAF50</color> <!-- Green for certain tags -->
+    <color name="tag_red">#F44336</color>   <!-- Red for certain tags -->
+    <color name="tag_default">#9E9E9E</color> <!-- Default gray for other tags -->
+</resources>
