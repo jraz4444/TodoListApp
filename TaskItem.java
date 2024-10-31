@@ -1,4 +1,4 @@
-package com.example.todolistapp;
+package com.example.todolistappbasic;
 
 public class TaskItem {
     private String taskDescription;
