@@ -14,6 +14,10 @@ public class TaskItem {
         this.notes = notes; // Initialize notes
     }
 
+    public TaskItem() {
+
+    }
+
     // Getters and Setters
     public String getTaskDescription() {
         return taskDescription;
