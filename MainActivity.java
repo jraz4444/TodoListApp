@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Switch;
@@ -46,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         Button buttonSort = findViewById(R.id.buttonSort);
         listViewTasks = findViewById(R.id.listViewTasks);
         Switch switchDarkMode = findViewById(R.id.switchDarkMode);
-        CalendarView calendarView = findViewById(R.id.calendarView);
 
         // Initialize the tasks list
         tasks = new ArrayList<>();
@@ -66,12 +64,6 @@ public class MainActivity extends AppCompatActivity {
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             toggleDarkMode(isChecked);
             saveDarkModePreference(isChecked);
-        });
-
-        // CalendarView selection handling
-        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            selectedDueDate = dayOfMonth + "/" + (month + 1) + "/" + year;
-            Toast.makeText(MainActivity.this, "Selected Due Date: " + selectedDueDate, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -151,3 +143,4 @@ public class MainActivity extends AppCompatActivity {
         return calendar;
     }
 }
+
