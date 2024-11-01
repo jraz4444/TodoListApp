@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<TaskItem> tasks; // List to hold TaskItems
     private TaskAdapter taskAdapter; // Adapter to bind tasks to ListView
     private ListView listViewTasks; // ListView for displaying tasks
+    private DBHandler dbHandler; // Database handler
     private String selectedDueDate = "";  // To store the selected due date
 
     @Override
@@ -34,7 +35,16 @@ public class MainActivity extends AppCompatActivity {
         initUIComponents();
 
         // Load and apply dark mode preference
-        applyDarkModePreference();
+        saveDarkModePreference();
+
+        // Initialize the DBHandler
+        dbHandler = new DBHandler(this);
+
+        // Load tasks from the database
+        loadTasksFromDatabase();
+    }
+
+    private void saveDarkModePreference() {
     }
 
     private void initUIComponents() {
@@ -67,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void applyDarkModePreference() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        boolean isDarkMode = sharedPreferences.getBoolean("DarkMode", false);
-        toggleDarkMode(isDarkMode);
+    private void loadTasksFromDatabase() {
+        tasks.clear(); // Clear current task list
+        tasks.addAll(dbHandler.getAllTasks()); // Retrieve all tasks from the database
+        taskAdapter.notifyDataSetChanged(); // Notify the adapter of data change
     }
 
     private void showDatePickerDialog() {
@@ -97,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
             TaskItem taskItem = new TaskItem(taskDescription, selectedDueDate, notes);
             tasks.add(taskItem);
             taskAdapter.notifyDataSetChanged();
+            dbHandler.addTask(taskItem); // Save task to database
             clearInputFields(editTextTask, editTextNotes);
             selectedDueDate = ""; // Reset due date after adding task
         } else {
