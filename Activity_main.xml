@@ -1,157 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp">
 
-
-    <!-- Scrollable Content Above the ListView -->
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:orientation="vertical">
 
-        <!-- Inner LinearLayout Inside ScrollView -->
-        <LinearLayout
+        <!-- Title or Header Text -->
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Task Manager"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="24sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Switch for Dark Mode -->
+        <Switch
+            android:id="@+id/switchDarkMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dark Mode"
+            android:layout_gravity="end" />
+
+        <!-- Task Input Section -->
+        <EditText
+            android:id="@+id/editTextTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:hint="Enter a task"
+            android:layout_marginTop="8dp" />
 
-            <!-- Title or Header Text -->
-            <TextView
-                android:id="@+id/textViewTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Task Manager"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="20sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"/>
+        <EditText
+            android:id="@+id/editTextNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter notes (optional)"
+            android:layout_marginTop="8dp" />
 
-            <!-- Switch for Dark Mode -->
-            <Switch
-                android:id="@+id/switchDarkMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dark Mode"
-                android:layout_gravity="end" />
+        <!-- Buttons for Due Date, Add Task, and Sort -->
+        <Button
+            android:id="@+id/buttonDueDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Due Date"
+            android:layout_marginTop="8dp" />
 
-            <!-- Progress Report Section -->
-            <TextView
-                android:id="@+id/progress_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0% Completed"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp" />
+        <Button
+            android:id="@+id/buttonAddTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Task"
+            android:layout_marginTop="8dp" />
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:max="100"
-                android:progress="0"
-                android:progressTint="#4CAF50"
-                android:backgroundTint="#e0e0e0"
-                android:layout_marginVertical="10dp" />
-
-            <!-- Task Checkboxes -->
-
-            <!-- Task Input Section -->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="vertical"
-                android:padding="24dp">
-
-                <CheckBox
-                    android:id="@+id/task1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Task 1" />
-
-                <CheckBox
-                    android:id="@+id/task2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Task 2" />
-
-                <CheckBox
-                    android:id="@+id/task3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Task 3" />
-
-                <CheckBox
-                    android:id="@+id/task4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Task 4" />
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/editTextTask"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter a task"
-                android:layout_marginTop="8dp" />
-
-            <EditText
-                android:id="@+id/editTextNotes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter notes (optional)"
-                android:layout_marginTop="8dp" />
-
-            <!-- Buttons for Due Date, Add Task, and Sort -->
-            <Button
-                android:id="@+id/buttonDueDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Select Due Date"
-                android:layout_marginTop="8dp" />
-
-            <Button
-                android:id="@+id/buttonAddTask"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add Task"
-                android:layout_marginTop="8dp" />
-
-            <Button
-                android:id="@+id/buttonSort"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sort by Due Date"
-                android:layout_marginTop="8dp" />
-        </LinearLayout>
-    </ScrollView>
+        <Button
+            android:id="@+id/buttonSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort by Due Date"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
 
     <!-- Static ListView Section -->
     <ListView
         android:id="@+id/listViewTasks"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp" />
-
-    <!-- Scrollable CalendarView Section Below the ListView -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp" />
-    </ScrollView>
-
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1" />
 </LinearLayout>
 
