@@ -16,7 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.todolistapp.TaskItem;
+import com.example.todolistappbasic.TaskItem;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -161,3 +161,4 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
         notifyDataSetChanged();
     }
 }
+
