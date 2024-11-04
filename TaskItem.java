@@ -4,18 +4,19 @@ public class TaskItem {
     private String taskDescription;
     private boolean isCompleted;
     private String dueDate;
-    private String notes; // New field for notes
+    private String notes;
+    private int id;
 
-    // Constructor
+    // Constructor with completed status
     public TaskItem(String taskDescription, String dueDate, String notes) {
         this.taskDescription = taskDescription;
-        this.isCompleted = false; // Initially, the task is not completed
+        this.isCompleted = isCompleted;
         this.dueDate = dueDate;
-        this.notes = notes; // Initialize notes
+        this.notes = notes;
     }
 
+    // Default constructor
     public TaskItem() {
-
     }
 
     // Getters and Setters
@@ -49,5 +50,13 @@ public class TaskItem {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
