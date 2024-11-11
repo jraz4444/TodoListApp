@@ -99,14 +99,14 @@
         android:text="notes"
         android:paddingTop="4dp" />
 
-    <!-- Left label: "Not Important"
+    <!-- Left label: "Not Important" -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Not Important"
         android:layout_gravity="start"
-        android:paddingEnd="8dp"/-->
-    <!--
+        android:paddingEnd="8dp"/>
+
     <TextView
         android:id="@+id/sliderValueText"
         android:layout_width="wrap_content"
@@ -114,24 +114,24 @@
         android:text="1"
         android:textSize="18sp"
         android:layout_gravity="center_horizontal"
-        android:paddingBottom="8dp"/ -->
+        android:paddingBottom="8dp"/>
 
-    <!-- SeekBar
+
     <SeekBar
         android:id="@+id/slider"
         android:layout_width="393dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:max="9"
-        android:progress="0" / -->
+        android:progress="0" />
 
-    <!-- Right label: "Important"
+    <!-- Right label: "Important" -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Important"
         android:layout_gravity="end"
-        android:paddingStart="8dp"/> -->
+        android:paddingStart="8dp"/>
 
 
 </LinearLayout>
