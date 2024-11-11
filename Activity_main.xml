@@ -46,41 +46,118 @@
             android:hint="Enter notes (optional)"
             android:layout_marginTop="8dp" />
 
-        <!-- Buttons for Due Date, Add Task, and Sort -->
-        <Button
-            android:id="@+id/buttonDueDate"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Due Date"
-            android:layout_marginTop="8dp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/buttonDecrement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/textViewPercentage1"
+                android:layout_width="139dp"
+                android:layout_height="48dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Percentage Completed:(%)"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewPercentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="0%"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/buttonIncrement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/buttonPercentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sort by Percentage"
+                android:layout_marginEnd="8dp" /> <!-- Optional margin between buttons -->
+
+            <Button
+                android:id="@+id/buttonDueDate"
+                android:layout_width="187dp"
+                android:layout_height="wrap_content"
+                android:text="Select Due Date" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/buttonSort"
+                android:layout_width="242dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Sort by Due Date" />
+
+            <Button
+                android:id="@+id/buttonAddTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Task" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/buttonAlphabet"
+                android:layout_width="167dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Sort by Alphabet" />
+
+            <Button
+                android:id="@+id/buttonImportance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Importance of Tasks" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/buttonAddTask"
-            android:layout_width="wrap_content"
+            android:id="@+id/buttonImportance1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Task"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:text="Sort by Importance" />
 
-        <Button
-            android:id="@+id/buttonSort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sort by Due Date"
-            android:layout_marginTop="8dp" />
 
-        <Button
-            android:id="@+id/buttonAlphabet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sort by Alphabet"
-            android:layout_marginTop="8dp" />
-
-        <Button
-            android:id="@+id/buttonImportance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Importance of Tasks"
-            android:layout_marginTop="8dp" />
 
     </LinearLayout>
 
