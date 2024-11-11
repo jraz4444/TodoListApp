@@ -75,6 +75,12 @@
             android:text="Sort by Alphabet"
             android:layout_marginTop="8dp" />
 
+        <Button
+            android:id="@+id/buttonImportance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Importance of Tasks"
+            android:layout_marginTop="8dp" />
 
     </LinearLayout>
 
@@ -86,5 +92,6 @@
         android:layout_marginTop="16dp"
         android:layout_weight="1" />
 </LinearLayout>
+
 
 
