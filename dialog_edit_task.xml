@@ -29,6 +29,51 @@
         android:layout_height="wrap_content"
         android:hint="Notes"
         android:inputType="textMultiLine"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/buttonDecrement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-" />
+
+        <TextView
+            android:id="@+id/textViewPercentage1"
+            android:layout_width="139dp"
+            android:layout_height="48dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="Percentage Completed:(%)"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textViewPercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="0%"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/buttonIncrement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editImportance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Importance"
+        android:inputType="textMultiLine"/>
     <Button
         android:id="@+id/buttonEdit"
         android:layout_width="wrap_content"
