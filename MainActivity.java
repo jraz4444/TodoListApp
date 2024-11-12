@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         EditText editTextNotes = findViewById(R.id.editTextNotes);
         Button buttonAddTask = findViewById(R.id.buttonAddTask);
         Button buttonDueDate = findViewById(R.id.buttonDueDate);
-        Button buttonSort = findViewById(R.id.buttonSort);
+        Button buttonSortByDueDate = findViewById(R.id.buttonSort);
+        Button buttonSortAlphabetically = findViewById(R.id.buttonAlphabet); // Button for alphabetical sort
         listViewTasks = findViewById(R.id.listViewTasks);
         Switch switchDarkMode = findViewById(R.id.switchDarkMode);
 
@@ -67,8 +68,11 @@ public class MainActivity extends AppCompatActivity {
         // Add Task button functionality
         buttonAddTask.setOnClickListener(v -> addTask(editTextTask, editTextNotes));
 
-        // Sort Tasks button functionality
-        buttonSort.setOnClickListener(v -> sortTasksByDueDate());
+        // Sort Tasks by Due Date button functionality
+        buttonSortByDueDate.setOnClickListener(v -> sortTasksByDueDate());
+
+        // Sort Tasks Alphabetically button functionality
+        buttonSortAlphabetically.setOnClickListener(v -> sortTasksAlphabetically());
 
         // Dark Mode toggle functionality
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -152,6 +156,16 @@ public class MainActivity extends AppCompatActivity {
             calendar.set(year, month, day);
         }
         return calendar;
+    }
+
+    private void sortTasksAlphabetically() {
+        Collections.sort(tasks, new Comparator<TaskItem>() {
+            @Override
+            public int compare(TaskItem t1, TaskItem t2) {
+                return t1.getTaskDescription().compareToIgnoreCase(t2.getTaskDescription());
+            }
+        });
+        taskAdapter.notifyDataSetChanged();
     }
 }
 
