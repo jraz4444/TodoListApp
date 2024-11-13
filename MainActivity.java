@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Button buttonSortByDueDate = findViewById(R.id.buttonSort);
         Button buttonSortAlphabetically = findViewById(R.id.buttonAlphabet); // Button for alphabetical sort
         Button buttonImportance = findViewById(R.id.buttonImportance); // Button for importance
+        Button buttonSortImportance = findViewById(R.id.buttonImportance1);
         listViewTasks = findViewById(R.id.listViewTasks);
         Switch switchDarkMode = findViewById(R.id.switchDarkMode);
 
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
         // Sort Tasks Alphabetically button functionality
         buttonSortAlphabetically.setOnClickListener(v -> sortTasksAlphabetically());
 
+        buttonSortImportance.setOnClickListener(v -> sortTasksByImportance());
+
+
         // Importance button functionality
         buttonImportance.setOnClickListener(v -> setTaskImportance());
 
@@ -87,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
             saveDarkModePreference(isChecked);
         });
     }
+
+
 
     private void loadTasksFromDatabase() {
         tasks.clear(); // Clear current task list
@@ -184,6 +190,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         taskAdapter.notifyDataSetChanged();
+    }
+
+    public void sortTasksByImportance() {
+        Collections.sort(tasks, (t1, t2) -> {
+            String importance1 = t1.getImportance() != null ? t1.getImportance() : "Medium"; // Default to "Medium"
+            String importance2 = t2.getImportance() != null ? t2.getImportance() : "Medium"; // Default to "Medium"
+
+            // If one of the tasks is "Low", it should stay where it is
+            if (importance1.equals("Low") && !importance2.equals("Low")) {
+                return 1; // "Low" tasks should be sorted to the end
+            } else if (!importance1.equals("Low") && importance2.equals("Low")) {
+                return -1; // Non-"Low" tasks should be sorted before "Low" tasks
+            }
+
+            // Otherwise, compare the importance values (alphabetical sort)
+            return importance1.compareTo(importance2);
+        });
+        taskAdapter.notifyDataSetChanged();  // Refresh the list view after sorting
+    }
+
+
+    private int getImportanceValue(String importance) {
+        switch (importance) {
+            case "High":
+                return 3;
+            case "Low":
+                return 1;
+            default:
+                return 2;  // Default to "Medium" if somehow the importance is invalid
+        }
     }
 }
 
