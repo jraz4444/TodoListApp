@@ -8,6 +8,7 @@ public class TaskItem {
     private int id;
     private String importance;
 
+
     // Constructor with completed status
     public TaskItem(String taskDescription, String dueDate, String notes, String medium) {
         this.taskDescription = taskDescription;
