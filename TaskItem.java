@@ -6,13 +6,15 @@ public class TaskItem {
     private String dueDate;
     private String notes;
     private int id;
+    private String importance;
 
     // Constructor with completed status
-    public TaskItem(String taskDescription, String dueDate, String notes) {
+    public TaskItem(String taskDescription, String dueDate, String notes, String medium) {
         this.taskDescription = taskDescription;
         this.isCompleted = isCompleted;
         this.dueDate = dueDate;
         this.notes = notes;
+        this.importance = importance;
     }
 
     // Default constructor
@@ -58,5 +60,12 @@ public class TaskItem {
 
     public void setId(int id) {
         this.id = id;
+    }
+    public String getImportance() {
+        return importance;
+    }
+
+    public void setImportance(String importance) {
+        this.importance = importance;
     }
 }
