@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class TaskAdapter extends ArrayAdapter<TaskItem> {
@@ -158,6 +159,17 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
             return 0;
         });
         notifyDataSetChanged();
+    }
+
+    // Sort tasks by importance
+    public void sortTasksByImportance() {
+        Collections.sort(tasks, (t1, t2) -> {
+            String importance1 = t1.getImportance() != null ? t1.getImportance() : "Medium"; // Default to "Medium"
+            String importance2 = t2.getImportance() != null ? t2.getImportance() : "Medium"; // Default to "Medium"
+
+            return importance1.compareTo(importance2);
+        });
+        notifyDataSetChanged();  // Refresh the list view after sorting
     }
 }
 
