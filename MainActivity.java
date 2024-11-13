@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         initUIComponents();
 
         // Load and apply dark mode preference
-        saveDarkModePreference();
+        loadDarkModePreference();
 
         // Initialize the DBHandler
         dbHandler = new DBHandler(this);
@@ -44,7 +44,10 @@ public class MainActivity extends AppCompatActivity {
         loadTasksFromDatabase();
     }
 
-    private void saveDarkModePreference() {
+    private void loadDarkModePreference() {
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        boolean isDarkMode = preferences.getBoolean("DarkMode", false); // Default to false
+        toggleDarkMode(isDarkMode);
     }
 
     private void initUIComponents() {
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Button buttonDueDate = findViewById(R.id.buttonDueDate);
         Button buttonSortByDueDate = findViewById(R.id.buttonSort);
         Button buttonSortAlphabetically = findViewById(R.id.buttonAlphabet); // Button for alphabetical sort
+        Button buttonImportance = findViewById(R.id.buttonImportance); // Button for importance
         listViewTasks = findViewById(R.id.listViewTasks);
         Switch switchDarkMode = findViewById(R.id.switchDarkMode);
 
@@ -73,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Sort Tasks Alphabetically button functionality
         buttonSortAlphabetically.setOnClickListener(v -> sortTasksAlphabetically());
+
+        // Importance button functionality
+        buttonImportance.setOnClickListener(v -> setTaskImportance());
 
         // Dark Mode toggle functionality
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -108,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         String notes = editTextNotes.getText().toString();
 
         if (!taskDescription.isEmpty()) {
-            TaskItem taskItem = new TaskItem(taskDescription, selectedDueDate, notes);
+            TaskItem taskItem = new TaskItem(taskDescription, selectedDueDate, notes, "Medium"); // Default to "Medium" importance
             tasks.add(taskItem);
             taskAdapter.notifyDataSetChanged();
             dbHandler.addTask(taskItem); // Save task to database
@@ -116,6 +123,17 @@ public class MainActivity extends AppCompatActivity {
             selectedDueDate = ""; // Reset due date after adding task
         } else {
             Toast.makeText(this, "Task description cannot be empty", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setTaskImportance() {
+        // For simplicity, we're just toggling between "Low", "Medium", and "High"
+        String newImportance = "High".equals(tasks.isEmpty() ? "" : tasks.get(tasks.size() - 1).getImportance()) ? "Low" : "High";
+        if (!tasks.isEmpty()) {
+            TaskItem lastTask = tasks.get(tasks.size() - 1);
+            lastTask.setImportance(newImportance);
+            taskAdapter.notifyDataSetChanged();
+            Toast.makeText(this, "Task importance set to: " + newImportance, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -168,4 +186,5 @@ public class MainActivity extends AppCompatActivity {
         taskAdapter.notifyDataSetChanged();
     }
 }
+
 
