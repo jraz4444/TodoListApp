@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     private ListView listViewTasks; // ListView for displaying tasks
     private DBHandler dbHandler; // Database handler
     private String selectedDueDate = "";  // To store the selected due date
+
+    private int percentage = 0; // Variable to store the current percentage
+    private TextView textViewPercentage; // TextView to display percentage
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +63,32 @@ public class MainActivity extends AppCompatActivity {
         Button buttonSortAlphabetically = findViewById(R.id.buttonAlphabet); // Button for alphabetical sort
         Button buttonImportance = findViewById(R.id.buttonImportance); // Button for importance
         Button buttonSortImportance = findViewById(R.id.buttonImportance1);
+        // Initialize percentage display and control buttons
+        textViewPercentage = findViewById(R.id.textViewPercentage);
+        Button buttonIncrease = findViewById(R.id.buttonIncrement);
+        Button buttonDecrease = findViewById(R.id.buttonDecrement);
+
         listViewTasks = findViewById(R.id.listViewTasks);
         Switch switchDarkMode = findViewById(R.id.switchDarkMode);
+
+        // Set the initial percentage display
+        updatePercentageDisplay();
+
+        // Increase button functionality
+        buttonIncrease.setOnClickListener(v -> {
+            if (percentage < 100) {  // Limit the percentage to 100
+                percentage++;
+                updatePercentageDisplay();
+            }
+        });
+
+        // Decrease button functionality
+        buttonDecrease.setOnClickListener(v -> {
+            if (percentage > 0) {  // Limit the percentage to 0
+                percentage--;
+                updatePercentageDisplay();
+            }
+        });
 
         // Initialize the tasks list
         tasks = new ArrayList<>();
@@ -85,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         // Importance button functionality
         buttonImportance.setOnClickListener(v -> setTaskImportance());
 
+
+
         // Dark Mode toggle functionality
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             toggleDarkMode(isChecked);
@@ -92,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    private void updatePercentageDisplay() {
+        textViewPercentage.setText(percentage + "%");
+    }
 
     private void loadTasksFromDatabase() {
         tasks.clear(); // Clear current task list
@@ -222,5 +254,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
-
 
