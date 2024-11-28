@@ -147,13 +147,11 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
                 EditText editDescription = editView.findViewById(R.id.editTaskDescription);
                 EditText editDueDate = editView.findViewById(R.id.editDueDate);
                 EditText editNotes = editView.findViewById(R.id.editNotes);
-                EditText editImportance = editView.findViewById(R.id.editImportance);
 
                 // Populate edit fields with current task values
                 editDescription.setText(taskItem.getTaskDescription());
                 editDueDate.setText(taskItem.getDueDate());
                 editNotes.setText(taskItem.getNotes());
-                editImportance.setText(taskItem.getImportance());
 
                 new AlertDialog.Builder(getContext())
                         .setTitle("Edit Task")
@@ -162,7 +160,6 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
                             taskItem.setTaskDescription(editDescription.getText().toString());
                             taskItem.setDueDate(editDueDate.getText().toString());
                             taskItem.setNotes(editNotes.getText().toString());
-                            taskItem.setImportance(editImportance.getText().toString());
                             notifyDataSetChanged();
                             Toast.makeText(getContext(), "Task updated", Toast.LENGTH_SHORT).show();
                         })
