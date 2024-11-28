@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         buttonIncrease.setOnClickListener(v -> {
             if (percentage < 100) {  // Limit the percentage to 100
                 percentage++;
+                updatePercentage(percentage);
                 updatePercentageDisplay();
             }
         });
@@ -109,11 +110,8 @@ public class MainActivity extends AppCompatActivity {
 
         buttonSortImportance.setOnClickListener(v -> sortTasksByImportance());
 
-
         // Importance button functionality
         buttonImportance.setOnClickListener(v -> setTaskImportance());
-
-
 
         // Dark Mode toggle functionality
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -122,8 +120,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void updatePercentage(int newPercentage) {
+        // Find the last task or relevant task to update
+        if (!tasks.isEmpty()) {
+            TaskItem lastTask = tasks.get(tasks.size() - 1); // Or find the task you're updating
+            lastTask.setPercentage(newPercentage); // Update the task's percentage
+            taskAdapter.notifyDataSetChanged(); // Notify the adapter to refresh the list
+        }
+    }
+
     private void updatePercentageDisplay() {
-        textViewPercentage.setText(percentage + "%");
+        // Display the current percentage in the text view
+        textViewPercentage.setText("Completion: " + percentage + "%");
     }
 
     private void loadTasksFromDatabase() {
@@ -152,26 +160,43 @@ public class MainActivity extends AppCompatActivity {
         String taskDescription = editTextTask.getText().toString();
         String notes = editTextNotes.getText().toString();
 
-        if (!taskDescription.isEmpty()) {
-            TaskItem taskItem = new TaskItem(taskDescription, selectedDueDate, notes, "Medium"); // Default to "Medium" importance
-            tasks.add(taskItem);
-            taskAdapter.notifyDataSetChanged();
-            dbHandler.addTask(taskItem); // Save task to database
-            clearInputFields(editTextTask, editTextNotes);
-            selectedDueDate = ""; // Reset due date after adding task
-        } else {
+        if (taskDescription.isEmpty()) {
             Toast.makeText(this, "Task description cannot be empty", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        // Default to current date if no due date is selected
+        if (selectedDueDate.isEmpty()) {
+            selectedDueDate = "No due date set";
+        }
+
+        TaskItem taskItem = new TaskItem(taskDescription, selectedDueDate, notes, "Medium"); // Default to "Medium" importance
+        tasks.add(taskItem);
+        taskAdapter.notifyDataSetChanged();
+        dbHandler.addTask(taskItem); // Save task to database
+        clearInputFields(editTextTask, editTextNotes);
+        selectedDueDate = ""; // Reset due date after adding task
     }
 
     private void setTaskImportance() {
-        // For simplicity, we're just toggling between "Low", "Medium", and "High"
-        String newImportance = "High".equals(tasks.isEmpty() ? "" : tasks.get(tasks.size() - 1).getImportance()) ? "Low" : "High";
         if (!tasks.isEmpty()) {
             TaskItem lastTask = tasks.get(tasks.size() - 1);
+            String newImportance = getNextImportance(lastTask.getImportance());
             lastTask.setImportance(newImportance);
             taskAdapter.notifyDataSetChanged();
             Toast.makeText(this, "Task importance set to: " + newImportance, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getNextImportance(String currentImportance) {
+        switch (currentImportance) {
+            case "High":
+                return "Medium";
+            case "Medium":
+                return "Low";
+            case "Low":
+            default:
+                return "High";
         }
     }
 
@@ -227,31 +252,10 @@ public class MainActivity extends AppCompatActivity {
     public void sortTasksByImportance() {
         Collections.sort(tasks, (t1, t2) -> {
             String importance1 = t1.getImportance() != null ? t1.getImportance() : "Medium"; // Default to "Medium"
-            String importance2 = t2.getImportance() != null ? t2.getImportance() : "Medium"; // Default to "Medium"
-
-            // If one of the tasks is "Low", it should stay where it is
-            if (importance1.equals("Low") && !importance2.equals("Low")) {
-                return 1; // "Low" tasks should be sorted to the end
-            } else if (!importance1.equals("Low") && importance2.equals("Low")) {
-                return -1; // Non-"Low" tasks should be sorted before "Low" tasks
-            }
-
-            // Otherwise, compare the importance values (alphabetical sort)
+            String importance2 = t2.getImportance() != null ? t2.getImportance() : "Medium";
             return importance1.compareTo(importance2);
         });
-        taskAdapter.notifyDataSetChanged();  // Refresh the list view after sorting
-    }
-
-
-    private int getImportanceValue(String importance) {
-        switch (importance) {
-            case "High":
-                return 3;
-            case "Low":
-                return 1;
-            default:
-                return 2;  // Default to "Medium" if somehow the importance is invalid
-        }
+        taskAdapter.notifyDataSetChanged();
     }
 }
 
