@@ -54,6 +54,11 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
         Button buttonMoveDown = convertView.findViewById(R.id.buttonMoveDown);
         Button buttonEdit = convertView.findViewById(R.id.buttonEdit);
         Button buttonDelete = convertView.findViewById(R.id.buttonDelete);
+        TextView textViewPercentage = convertView.findViewById(R.id.textViewPercentage); // Get the TextView for percentage
+
+        int percentage = taskItem.getPercentage(); // Get percentage value from TaskItem
+        textViewPercentage.setText(percentage + "%");
+
 
         // Set task details
         textViewTaskDescription.setText(taskItem.getTaskDescription());
@@ -167,6 +172,9 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
             String importance1 = t1.getImportance() != null ? t1.getImportance() : "Medium"; // Default to "Medium"
             String importance2 = t2.getImportance() != null ? t2.getImportance() : "Medium"; // Default to "Medium"
 
+            // Custom sort order: High > Medium > Low
+            if ("high".equalsIgnoreCase(importance1)) return -1;
+            if ("low".equalsIgnoreCase(importance2)) return 1;
             return importance1.compareTo(importance2);
         });
         notifyDataSetChanged();  // Refresh the list view after sorting
