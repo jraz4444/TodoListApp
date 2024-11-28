@@ -65,11 +65,15 @@ public class MainActivity extends AppCompatActivity {
         Button buttonSortImportance = findViewById(R.id.buttonImportance1);
         // Initialize percentage display and control buttons
         textViewPercentage = findViewById(R.id.textViewPercentage);
+        Button buttonSortByPercentage = findViewById(R.id.buttonPercentage);
         Button buttonIncrease = findViewById(R.id.buttonIncrement);
         Button buttonDecrease = findViewById(R.id.buttonDecrement);
 
         listViewTasks = findViewById(R.id.listViewTasks);
         Switch switchDarkMode = findViewById(R.id.switchDarkMode);
+
+        // Method to sort tasks by percentage
+        buttonSortByPercentage.setOnClickListener(v -> sortTasksByPercentage());
 
         // Set the initial percentage display
         updatePercentageDisplay();
@@ -254,6 +258,16 @@ public class MainActivity extends AppCompatActivity {
             String importance1 = t1.getImportance() != null ? t1.getImportance() : "Medium"; // Default to "Medium"
             String importance2 = t2.getImportance() != null ? t2.getImportance() : "Medium";
             return importance1.compareTo(importance2);
+        });
+        taskAdapter.notifyDataSetChanged();
+    }
+
+    private void sortTasksByPercentage() {
+        Collections.sort(tasks, new Comparator<TaskItem>() {
+            @Override
+            public int compare(TaskItem t1, TaskItem t2) {
+                return Integer.compare(t2.getPercentage(), t1.getPercentage());
+            }
         });
         taskAdapter.notifyDataSetChanged();
     }
