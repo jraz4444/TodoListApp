@@ -212,5 +212,11 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
         });
         notifyDataSetChanged();
     }
+
+    // Sort tasks by percentage
+    public void sortTasksByPercentage() {
+        Collections.sort(tasks, (t1, t2) -> Integer.compare(t2.getPercentage(), t1.getPercentage())); // Sort in descending order
+        notifyDataSetChanged();
+    }
 }
 
