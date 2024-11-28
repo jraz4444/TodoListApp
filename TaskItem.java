@@ -7,15 +7,16 @@ public class TaskItem {
     private String notes;
     private int id;
     private String importance;
-
+    private int percentage;  // Add this line
 
     // Constructor with completed status
-    public TaskItem(String taskDescription, String dueDate, String notes, String medium) {
+    public TaskItem(String taskDescription, String dueDate, String notes, String importance) {
         this.taskDescription = taskDescription;
         this.isCompleted = isCompleted;
         this.dueDate = dueDate;
         this.notes = notes;
         this.importance = importance;
+        this.percentage = percentage;  // Add this line
     }
 
     // Default constructor
@@ -62,11 +63,20 @@ public class TaskItem {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getImportance() {
         return importance;
     }
 
     public void setImportance(String importance) {
         this.importance = importance;
+    }
+
+    public int getPercentage() {
+        return percentage;  // Getter for percentage
+    }
+
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;  // Setter for percentage
     }
 }
