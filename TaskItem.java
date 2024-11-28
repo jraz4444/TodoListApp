@@ -7,20 +7,23 @@ public class TaskItem {
     private String notes;
     private int id;
     private String importance;
-    private int percentage;  // Add this line
+    private int percentage = 0;  // Add this line for percentage
 
-    // Constructor with completed status
+    // Constructor with completed status and percentage
     public TaskItem(String taskDescription, String dueDate, String notes, String importance) {
         this.taskDescription = taskDescription;
-        this.isCompleted = isCompleted;
         this.dueDate = dueDate;
         this.notes = notes;
         this.importance = importance;
-        this.percentage = percentage;  // Add this line
+        this.percentage = percentage;  // Initialize the percentage field
+        this.isCompleted = false; // Default to not completed
     }
 
     // Default constructor
     public TaskItem() {
+        // Default values
+        this.isCompleted = false;
+        this.percentage = 0;  // Default percentage to 0
     }
 
     // Getters and Setters
